@@ -1,0 +1,60 @@
+﻿@*@model List<KnowledgeHub.Web.Models.Entities.Category>
+<h3>We Have @Model.Count Categories</h3>
+<hr/>
+<h4>@TempData["Message"]</h4>
+
+<a asp-action="Create" class="btn btn-primary">Create New Category</a><br/>
+<table class ="table table-bordered">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    @foreach(var c in Model)
+    {
+    <tr>
+        <td>@c.Name</td>
+        <td>@c.Description</td>
+        <td>
+            <a asp-action="Edit" class="btn btn-primary">Edit</a>
+            <a asp-action="Delete" class="btn btn-danger">Delete</a>
+        </td>
+    </tr>
+    }
+</table>*@
+
+@using KnowledgeHub.Web.Models.Data;
+@using System.Data
+@using KnowledgeHub.Web.Models.Entities
+@model List<KnowledgeHub.Web.Models.Entities.Category>   
+
+    <h4>@TempData["Message"]</h4>
+    <a asp-action="Create" class="btn btn-primary">Create New Category</a>
+    @*<div class="scroll_table_display">*@
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach(var item  in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Description
+                </td>
+                <td>
+                    <a asp-action="Edit" class="btn btn-primary">Edit</a>
+                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.CategoryID" >Delete</a>
+                </td>
+            </tr>  
+        }
+        </tbody>
+        
+    </table>
