@@ -62,24 +62,45 @@ namespace KnowledgeHub.Web.Controllers
         }
         public IActionResult Delete(int id)
         {
-            var res = db.categories.Find(id);
-            return View(res);
+            Category categoryToDelete = db.categories.Find(id);
+            if (categoryToDelete == null)
+            {
+                return NotFound();
+            }
+            //db.Catagories.Remove(catagoryToDelete);
+            //db.SaveChanges();
+            //TempData["Message"] = $"Catagory {catagoryToDelete.Name} deleted successfully.";
+            //return RedirectToAction("Index");
+
+            return View("ConfirmDelete", categoryToDelete);
         }
-        public IActionResult Del(int id)
+
+        public IActionResult ConfirmDelete(int id)
         {
-            if (!ModelState.IsValid)
-                return View("Create");
-
-            var res = db.categories.Find(id);
-            db.categories.Remove(res);
+            Category categoryToDelete = db.categories.Find(id);
+            db.categories.Remove(categoryToDelete);
             db.SaveChanges();
-
-            return RedirectToAction("Display");
+            TempData["Message"] = $"Catagory {categoryToDelete.Name} deleted successfully.";
+            return RedirectToAction("Index");
         }
+        [HttpGet]
         public IActionResult Edit(int id)
         {
-            var res = db.categories.Find(id);
-            return View(res);
+            Category categoryToEdit = db.categories.Find(id);
+            if (categoryToEdit == null)
+            {
+                return NotFound();
+            }
+            return View(categoryToEdit);
+
+        }
+        [HttpPost]
+        public IActionResult Edit(Category editedcategory)
+        {
+            db.Entry(editedcategory).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            db.SaveChanges();
+            TempData["Message"] = $"Catagory {editedcategory.Name} deleted successfully.";
+            return RedirectToAction("Index");
         }
 
     }
